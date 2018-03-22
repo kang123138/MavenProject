@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	<!-- 使用bean元素定义一个由IOC容器创建的对象 -->
+	<!-- class属性指定用于创建bean的全类名 --><!-- 就是Student类的全类名 -->
+	<!-- id属性指定用于引用bean实例的标识 --><!-- 就是在测试Student的时候，在ClassPathXmlApplicationContext()方法中的参数 -->
+	<bean id="stu" class="com.atguigu.spring1.Student">
+		<!-- 使用property子元素为bean的属性赋值 --><!-- 分别为Student类中的三个属性赋值 -->
+		<property name="name" value="张三"></property>
+		<property name="age" value="12"></property>
+		<property name="address" value="北京市北七家镇"></property>
+	</bean>
+
+	<bean id="book" class="com.atguigu.spring2.Book">
+		<!-- <property name="id" value="1"></property> -->
+		<property name="id">
+			<value>1</value>
+		</property>
+		<property name="title" value="sanguoyanyi"></property>
+		<property name="author" value="luoguanzhong"></property>
+		<property name="price" value="100"></property>
+		<property name="sales" value="33"></property>
+	</bean>
+
+	<!-- tongguogouzaoqizhuru -->
+	<bean id="book2" class="com.atguigu.spring2.Book">
+		<constructor-arg value="1"></constructor-arg>
+		<constructor-arg value="hongloumeng"></constructor-arg>
+		<constructor-arg value="caoxueqin"></constructor-arg>
+		<constructor-arg value="44"></constructor-arg>
+		<constructor-arg value="55"></constructor-arg>
+	</bean>
+
+	<bean id="book3" class="com.atguigu.spring2.Book">
+
+		<constructor-arg value="2"></constructor-arg>
+		<constructor-arg value="luoguanzhogn" index="2"></constructor-arg>
+		<constructor-arg value="shuihuzhuan" index="1"></constructor-arg>
+		<constructor-arg value="100"></constructor-arg>
+		<constructor-arg value="200"></constructor-arg>
+	</bean>
+
+	<bean id="book4" class="com.atguigu.spring2.Book">
+		<constructor-arg value="3"></constructor-arg>
+		<constructor-arg value="abc"></constructor-arg>
+		<constructor-arg value="hahaah"></constructor-arg>
+		<constructor-arg value="22" type="double"></constructor-arg>
+	</bean>
+
+	<bean id="book5" class="com.atguigu.spring2.Book">
+		<property name="id" value="5"></property>
+		<property name="title">
+			<value><![CDATA[<三国杀>]]></value>
+		</property>
+		<property name="author">
+			<null></null>
+		</property>
+		<property name="price" value="44"></property>
+		<property name="sales" value="55"></property>
+	</bean>
+
+	<bean id="cartItem" class="com.atguigu.spring3.CartItem">
+		<property name="book">
+			<ref bean="book4" />
+		</property>
+		<property name="amount" value="11"></property>
+		<property name="count" value="44"></property>
+	</bean>
+	<bean id="cartItem2" class="com.atguigu.spring3.CartItem">
+		<constructor-arg>
+			<ref bean="book"/>
+		</constructor-arg>
+		<constructor-arg value="33"></constructor-arg>
+		<constructor-arg value="33"></constructor-arg>
+	</bean>
+
+	<bean id="cartItem1" class="com.atguigu.spring3.CartItem">
+		<property name="book">
+			<!-- 配置内部Bean -->
+			<bean id="book9" class="com.atguigu.spring2.Book">
+				<property name="id" value="6"></property>
+				<property name="title" value="aaa"></property>
+				<property name="author" value="dfd"></property>
+				<property name="price" value="66"></property>
+				<property name="sales" value="66"></property>
+			</bean>
+		</property>
+		<property name="amount" value="11"></property>
+		<property name="count" value="44"></property>
+	</bean>
+	
+	<!-- 配置集合属性 -->
+	<bean id="bookshop" class="com.atguigu.spring4.BookShop">
+		<property name="list">
+		<!--  通过list标签给list类型的属性赋值 
+			<list>
+			引用外部的Book类型的bean
+				<ref bean="book"/>
+				<ref bean="book2"/>
+				<ref bean="book3"/>
+			</list> -->
+			
+			
+			<!-- 引用外部的bean -->
+			<ref bean="list1"/>
+		</property>
+		<property name="map">
+		<!-- 通过map标签给Map类型的属性赋值 -->
+			<ref bean="map1"/>
+		</property>
+		<property name="properties">
+			<props>
+				<prop key="username">root</prop>
+				<prop key="password">root</prop>
+				<prop key="url">jdbc:mysql://localhost:3306/mydb</prop>
+				<prop key="dirverclass">com.mysql.jdbc.Driver</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<util:list id="list1">
+		<ref bean="book"/>
+		<ref bean="book3"/>
+	</util:list>
+	
+	<util:map id="map1">
+		<entry key="book001" value-ref="book"></entry>	
+		<entry key="book002" value-ref="book4"/>
+	</util:map>
+	
+	<!-- 通过p命名空间配置bean -->
+	<bean id="book10" class="com.atguigu.spring2.Book" 
+		p:id="6"
+		p:title="少妇白洁"
+		p:author="阿宾"
+		p:price="6.66"
+		p:sales="1000000">
+	</bean>
+</beans>
